@@ -58,10 +58,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
                     IConfiguration storeConfiguration = new YesSql.Configuration
                     {
-                        ContentSerializer = new PoolingJsonContentSerializer(
-                            sp.GetService<ArrayPool<char>>(),
-                            sp.GetService<ArrayPool<byte>>()
-                        ),
+                        ContentSerializer = new PoolingJsonContentSerializer(sp.GetService<ArrayPool<char>>()),
                     };
 
                     switch (shellSettings["DatabaseProvider"])

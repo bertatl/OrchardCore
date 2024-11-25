@@ -1,13 +1,12 @@
 using System;
 using System.Buffers;
 using Newtonsoft.Json;
-using OrchardCore.Abstractions.Pooling;
 using YesSql;
 
 namespace OrchardCore.Data
 {
     /// <summary>
-    /// Custom YesSql content serializer which forwards to generic pooling JSON serializer with custom settings.
+    /// Custom YesSql content serializer which uses Newtonsoft.Json with custom settings.
     /// </summary>
     internal sealed class PoolingJsonContentSerializer : IContentSerializer
     {
@@ -19,17 +18,17 @@ namespace OrchardCore.Data
             CheckAdditionalContent = false
         };
 
-        private readonly PoolingJsonSerializer _inner;
+        private readonly JsonSerializer _serializer;
 
         public PoolingJsonContentSerializer(ArrayPool<char> arrayPool)
         {
-            _inner = new PoolingJsonSerializer(arrayPool, _jsonSettings);
+            _serializer = JsonSerializer.Create(_jsonSettings);
         }
 
-        public object Deserialize(string content, Type type) => _inner.Deserialize(content, type);
+        public object Deserialize(string content, Type type) => JsonConvert.DeserializeObject(content, type, _jsonSettings);
 
-        public dynamic DeserializeDynamic(string content) => _inner.Deserialize<dynamic>(content);
+        public dynamic DeserializeDynamic(string content) => JsonConvert.DeserializeObject<dynamic>(content, _jsonSettings);
 
-        public string Serialize(object item) => _inner.Serialize(item);
+        public string Serialize(object item) => JsonConvert.SerializeObject(item, _jsonSettings);
     }
 }

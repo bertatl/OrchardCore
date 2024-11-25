@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
@@ -85,7 +86,7 @@ namespace OrchardCore.DynamicCache.EventHandlers
             if (!_cached.ContainsKey(cacheContext.CacheId) && context.ChildContent != null)
             {
                 // The content is pre-encoded in the cache so we don't have to do it every time it's rendered
-                using var sw = new ZStringWriter();
+using var sw = new StringWriter();
 
                 // 'ChildContent' may be a 'ViewBufferTextWriterContent' on which we can't
                 // call 'WriteTo()' twice, so here we update it with a new 'HtmlString()'.

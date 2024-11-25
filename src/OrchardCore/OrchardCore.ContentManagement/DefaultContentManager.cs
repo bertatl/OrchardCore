@@ -739,21 +739,8 @@ namespace OrchardCore.ContentManagement
 
             var context = new CloneContentContext(contentItem, cloneContentItem);
 
-            // Copy accessible properties
+            context.CloneContentItem.Data = contentItem.Data.DeepClone() as JObject;
             context.CloneContentItem.DisplayText = contentItem.DisplayText;
-            context.CloneContentItem.Latest = contentItem.Latest;
-            context.CloneContentItem.Published = contentItem.Published;
-            context.CloneContentItem.ModifiedUtc = contentItem.ModifiedUtc;
-            context.CloneContentItem.PublishedUtc = contentItem.PublishedUtc;
-            context.CloneContentItem.CreatedUtc = contentItem.CreatedUtc;
-            context.CloneContentItem.Owner = contentItem.Owner;
-            context.CloneContentItem.Author = contentItem.Author;
-
-            // If Data property is accessible, perform a deep clone
-            if (contentItem.Data != null)
-            {
-                context.CloneContentItem.Data = JObject.FromObject(contentItem.Data);
-            }
 
             await Handlers.InvokeAsync((handler, context) => handler.CloningAsync(context), context, _logger);
 

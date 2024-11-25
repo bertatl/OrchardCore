@@ -739,7 +739,11 @@ namespace OrchardCore.ContentManagement
 
             var context = new CloneContentContext(contentItem, cloneContentItem);
 
-            context.CloneContentItem.Apply(contentItem.Data.DeepClone() as JObject);
+            var contentItemData = contentItem.As<ContentElement>().Content;
+            if (contentItemData != null)
+            {
+                context.CloneContentItem.Apply(contentItemData.DeepClone() as JObject);
+            }
             context.CloneContentItem.DisplayText = contentItem.DisplayText;
 
             await Handlers.InvokeAsync((handler, context) => handler.CloningAsync(context), context, _logger);

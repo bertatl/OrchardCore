@@ -10,7 +10,6 @@ using Microsoft.Extensions.Options;
 using OrchardCore.Abstractions.Pooling;
 using OrchardCore.DynamicCache.Models;
 using OrchardCore.Environment.Cache;
-using System.Text.Json;
 
 namespace OrchardCore.DynamicCache.Services
 {

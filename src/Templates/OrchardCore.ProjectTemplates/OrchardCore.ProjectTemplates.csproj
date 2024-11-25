@@ -1,10 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\..\OrchardCore.Build\OrchardCore.Commons.props" />
-  <ItemGroup>
-    <PackageReference Remove="Microsoft.SourceLink.GitHub" />
-  </ItemGroup>
   <PropertyGroup>
-    <TargetFrameworks>$(AspNetCoreTargetFrameworks)</TargetFrameworks>
+    <TargetFrameworks>net8.0</TargetFrameworks>
     <IncludeBuildOutput>False</IncludeBuildOutput>
     <IncludeSource>False</IncludeSource>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
@@ -36,13 +34,11 @@
     OrchardCore Code Templates for dotnet new template configurations for creating new websites, themes and modules from the command shell.</Description>
     <PackageTags>$(PackageTags) OrchardCoreFramework</PackageTags>
   </PropertyGroup>
-
   <ItemGroup>
     <None Include="content\**" Exclude="**\.template.config.src\**" Pack="true">
       <PackagePath>content\%(RecursiveDir)%(FileName)%(Extension)</PackagePath>
     </None>
   </ItemGroup>
-
   <UsingTask TaskName="ReplaceFileText" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
     <ParameterGroup>
       <InputFilename ParameterType="System.String" Required="true" />
@@ -54,17 +50,14 @@
       <Using Namespace="System" />
       <Using Namespace="System.IO" />
       <Using Namespace="System.Text.RegularExpressions" />
-      <Code Type="Fragment" Language="cs">
-        <![CDATA[
+      <Code Type="Fragment" Language="cs"><![CDATA[
             File.WriteAllText(
                 OutputFilename,
                 Regex.Replace(File.ReadAllText(InputFilename), MatchExpression, ReplacementText)
                 );
-          ]]>
-      </Code>
+          ]]></Code>
     </Task>
   </UsingTask>
-
   <Target Name="TransformTemplateConfigs" BeforeTargets="Build" Condition="'$(TargetFramework)' == '$(DefaultTargetFramework)'">
     <!--
       For each template, copy its '.template.config.src' directory to '.template.config',
@@ -77,10 +70,8 @@
         <DestDir>%(Identity).template.config\</DestDir>
       </_TemplateConfigFileToCopy>
     </ItemGroup>
-
     <RemoveDir Directories="%(_TemplateConfigFileToCopy.DestDir)" />
     <Copy SourceFiles="@(_TemplateConfigFileToCopy)" DestinationFolder="%(DestDir)" />
-
     <!--
       Modify the .json files in the .template.config dirs to stamp MSBuild properties into them.
     -->
@@ -89,7 +80,9 @@
         <OutputPath>%(DestDir)%(RecursiveDir)%(Filename)%(Extension)</OutputPath>
       </GeneratedContent>
     </ItemGroup>
-
+    <ItemGroup>
+      <PackageReference Include="" Version="" />
+    </ItemGroup>
     <!-- Update the OrchardVersion in the templates to reflect the newly built version number. -->
     <ReplaceFileText InputFilename="%(GeneratedContent.OutputPath)" OutputFilename="%(GeneratedContent.OutputPath)" MatchExpression="\$\{TemplateOrchardVersion\}" ReplacementText="$(Version)" />
     <!-- Replace the default target framework for the template based on which TFM is being built. The resulting nuget package should have templates with the correct corresponding TFM defaulted in the template. -->

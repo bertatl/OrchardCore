@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <!-- NuGet properties-->
     <Title>OrchardCore Abstractions</Title>
@@ -8,14 +7,31 @@
     Abstractions of OrchardCore ShellHost.</Description>
     <PackageTags>$(PackageTags) OrchardCoreFramework</PackageTags>
   </PropertyGroup>
-
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="ZString" />
   </ItemGroup>
-
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>"OrchardCore.Data.YesSql"</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>"OrchardCore.ContentManagement.GraphQL"</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>"OrchardCore.DisplayManagement"</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>"OrchardCore.DynamicCache"</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
 </Project>

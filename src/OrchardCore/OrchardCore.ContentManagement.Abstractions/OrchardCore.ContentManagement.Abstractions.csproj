@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <RootNamespace>OrchardCore.ContentManagement</RootNamespace>
     <!-- NuGet properties-->
@@ -9,17 +8,18 @@
     Abstractions for ContentManagement</Description>
     <PackageTags>$(PackageTags) OrchardCoreCMS ContentManagement Abstractions</PackageTags>
   </PropertyGroup>
-
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\OrchardCore.Data.YesSql.Abstractions\OrchardCore.Data.YesSql.Abstractions.csproj" />
   </ItemGroup>
-
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>"OrchardCore.ContentManagement"</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
 </Project>

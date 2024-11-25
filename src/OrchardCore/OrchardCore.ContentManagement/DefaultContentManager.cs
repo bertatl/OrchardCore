@@ -739,8 +739,13 @@ namespace OrchardCore.ContentManagement
 
             var context = new CloneContentContext(contentItem, cloneContentItem);
 
-            context.CloneContentItem.Data = contentItem.Data.DeepClone() as JObject;
-            context.CloneContentItem.DisplayText = contentItem.DisplayText;
+            // Create a deep clone of the entire content item
+            var clonedItem = contentItem.Clone();
+
+            // Copy necessary properties to the new clone content item
+            context.CloneContentItem.DisplayText = clonedItem.DisplayText;
+            context.CloneContentItem.Latest = clonedItem.Latest;
+            context.CloneContentItem.Published = clonedItem.Published;
 
             await Handlers.InvokeAsync((handler, context) => handler.CloningAsync(context), context, _logger);
 

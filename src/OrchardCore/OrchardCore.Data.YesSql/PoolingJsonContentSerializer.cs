@@ -2,7 +2,6 @@ using System;
 using System.Buffers;
 using Newtonsoft.Json;
 using OrchardCore.Abstractions.Pooling;
-using OrchardCore.Json;
 using YesSql;
 
 namespace OrchardCore.Data
@@ -20,11 +19,11 @@ namespace OrchardCore.Data
             CheckAdditionalContent = false
         };
 
-        private readonly IPoolingJsonSerializer _inner;
+        private readonly PoolingJsonSerializer _inner;
 
-        public PoolingJsonContentSerializer(IPoolingJsonSerializerFactory poolingJsonSerializerFactory)
+        public PoolingJsonContentSerializer(ArrayPool<char> arrayPool)
         {
-            _inner = poolingJsonSerializerFactory.CreateJsonSerializer(_jsonSettings);
+            _inner = new PoolingJsonSerializer(arrayPool, _jsonSettings);
         }
 
         public object Deserialize(string content, Type type) => _inner.Deserialize(content, type);

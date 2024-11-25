@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
@@ -204,7 +205,7 @@ namespace OrchardCore.DynamicCache.TagHelpers
                             // The value is not cached, we need to render the tag helper output
                             var processedContent = await output.GetChildContentAsync();
 
-                            using var writer = new ZStringWriter();
+using var writer = new StringWriter();
                             // Write the start of a cache debug block.
                             if (_cacheOptions.DebugMode)
                             {

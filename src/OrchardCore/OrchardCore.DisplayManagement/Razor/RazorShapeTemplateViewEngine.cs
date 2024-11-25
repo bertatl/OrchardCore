@@ -97,7 +97,7 @@ namespace OrchardCore.DisplayManagement.Razor
             var actionContext = await GetActionContextAsync();
             var view = FindView(actionContext, viewName, viewEngine);
 
-            using var output = new ZStringWriter();
+using var output = new StringWriter();
             var viewContext = new ViewContext(
                 actionContext,
                 view,

@@ -8,6 +8,7 @@ using OrchardCore.ContentManagement.Display;
 using OrchardCore.ContentManagement.GraphQL.Options;
 using OrchardCore.DisplayManagement;
 using OrchardCore.DisplayManagement.ModelBinding;
+using System.IO;
 
 namespace OrchardCore.ContentManagement.GraphQL.Queries.Types
 {
@@ -48,7 +49,7 @@ namespace OrchardCore.ContentManagement.GraphQL.Queries.Types
                     var displayHelper = serviceProvider.GetRequiredService<IDisplayHelper>();
                     var htmlEncoder = serviceProvider.GetRequiredService<HtmlEncoder>();
 
-                    using var sw = new ZStringWriter();
+using var sw = new StringWriter();
                     var htmlContent = await displayHelper.ShapeExecuteAsync(model);
                     htmlContent.WriteTo(sw, htmlEncoder);
                     return sw.ToString();

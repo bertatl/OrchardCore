@@ -10,12 +10,12 @@ using Microsoft.Extensions.Options;
 using OrchardCore.Abstractions.Pooling;
 using OrchardCore.DynamicCache.Models;
 using OrchardCore.Environment.Cache;
+using System.Text.Json;
 
 namespace OrchardCore.DynamicCache.Services
 {
     public class DefaultDynamicCacheService : IDynamicCacheService
     {
-        private readonly PoolingJsonSerializer _serializer;
         private readonly ICacheContextManager _cacheContextManager;
         private readonly IDynamicCache _dynamicCache;
         private readonly IServiceProvider _serviceProvider;
@@ -25,13 +25,11 @@ namespace OrchardCore.DynamicCache.Services
         private ITagCache _tagcache;
 
         public DefaultDynamicCacheService(
-            ArrayPool<char> _arrayPool,
             ICacheContextManager cacheContextManager,
             IDynamicCache dynamicCache,
             IServiceProvider serviceProvider,
             IOptions<CacheOptions> options)
         {
-            _serializer = new PoolingJsonSerializer(_arrayPool);
             _cacheContextManager = cacheContextManager;
             _dynamicCache = dynamicCache;
             _serviceProvider = serviceProvider;
@@ -69,7 +67,7 @@ namespace OrchardCore.DynamicCache.Services
             var cacheKey = await GetCacheKey(context);
 
             _localCache[cacheKey] = value;
-            var esi = _serializer.Serialize(CacheContextModel.FromCacheContext(context));
+            var esi = JsonSerializer.Serialize(CacheContextModel.FromCacheContext(context));
 
             await Task.WhenAll(
                 SetCachedValueAsync(cacheKey, value, context),
@@ -151,7 +149,7 @@ namespace OrchardCore.DynamicCache.Services
                 return null;
             }
 
-            var esiModel = _serializer.Deserialize<CacheContextModel>(cachedValue);
+            var esiModel = JsonSerializer.Deserialize<CacheContextModel>(cachedValue);
             return esiModel.ToCacheContext();
         }
     }

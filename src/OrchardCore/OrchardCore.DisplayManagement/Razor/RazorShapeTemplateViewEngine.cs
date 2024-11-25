@@ -19,6 +19,7 @@ using Microsoft.Extensions.Options;
 using OrchardCore.Abstractions.Pooling;
 using OrchardCore.DisplayManagement.Descriptors.ShapeTemplateStrategy;
 using OrchardCore.DisplayManagement.Implementation;
+using System.Text;
 
 namespace OrchardCore.DisplayManagement.Razor
 {
@@ -97,7 +98,7 @@ namespace OrchardCore.DisplayManagement.Razor
             var actionContext = await GetActionContextAsync();
             var view = FindView(actionContext, viewName, viewEngine);
 
-            using var output = new ZStringWriter();
+using var output = new StringWriter();
             var viewContext = new ViewContext(
                 actionContext,
                 view,

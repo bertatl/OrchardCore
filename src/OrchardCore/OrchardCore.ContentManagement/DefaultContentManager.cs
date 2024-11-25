@@ -413,7 +413,7 @@ namespace OrchardCore.ContentManagement
             buildingContentItem.ContentItemVersionId = _idGenerator.GenerateUniqueId(existingContentItem);
             buildingContentItem.DisplayText = existingContentItem.DisplayText;
             buildingContentItem.Latest = true;
-            buildingContentItem.Data = JObject.FromObject(existingContentItem);
+            buildingContentItem.Data = JObject.FromObject(existingContentItem.Content);
 
             var context = new VersionContentContext(existingContentItem, buildingContentItem);
 

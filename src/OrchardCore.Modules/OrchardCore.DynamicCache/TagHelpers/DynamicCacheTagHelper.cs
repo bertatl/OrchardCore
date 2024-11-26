@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Options;
 using OrchardCore.Abstractions.Pooling;
 using OrchardCore.Environment.Cache;
+using System.IO;
 
 namespace OrchardCore.DynamicCache.TagHelpers
 {
@@ -204,7 +205,7 @@ namespace OrchardCore.DynamicCache.TagHelpers
                             // The value is not cached, we need to render the tag helper output
                             var processedContent = await output.GetChildContentAsync();
 
-                            using var writer = new ZStringWriter();
+using var writer = new StringWriter();
                             // Write the start of a cache debug block.
                             if (_cacheOptions.DebugMode)
                             {

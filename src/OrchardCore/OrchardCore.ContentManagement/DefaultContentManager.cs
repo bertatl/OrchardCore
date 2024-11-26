@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Reflection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement.CompiledQueries;
@@ -739,7 +740,18 @@ namespace OrchardCore.ContentManagement
 
             var context = new CloneContentContext(contentItem, cloneContentItem);
 
-            context.CloneContentItem.Apply(contentItem.Data.DeepClone() as JObject);
+            var dataProperty = typeof(ContentElement).GetProperty("Data", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (dataProperty != null)
+            {
+                var sourceData = dataProperty.GetValue(contentItem) as JObject;
+                var cloneData = dataProperty.GetValue(context.CloneContentItem) as JObject;
+
+                if (sourceData != null && cloneData != null)
+                {
+                    cloneData.Merge(sourceData.DeepClone());
+                }
+            }
+
             context.CloneContentItem.DisplayText = contentItem.DisplayText;
 
             await Handlers.InvokeAsync((handler, context) => handler.CloningAsync(context), context, _logger);
